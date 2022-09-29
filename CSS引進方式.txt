@@ -1,0 +1,32 @@
+1. Style Module
+建立 檔名.module.css
+import Style from '檔名.module.css'
+引入後使用className={Style."class名稱"}
+
+
+2. Styled-Components
+npm install --save styled-components
+
+import styled from 'styled-components';
+
+export const TestTitle = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: yellow;
+`;
+
+<TestTitle>StyleComponents import標題</TestTitle>
+
+3. tailwindCSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init --full
+
+tailwind.config中
+content: [
+"./src/**/*.{js,jsx,ts,tsx}",
+],
+
+於src下新增index.css並貼上
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

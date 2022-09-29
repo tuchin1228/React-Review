@@ -1,0 +1,49 @@
+# NPM
+npm install @reduxjs/toolkit
+
+
+建立store/index.js
+import { configureStore } from '@reduxjs/toolkit';
+import todoReducer from './store/slice/todo';
+
+export default configureStore({
+  reducer: {
+    todo: todoReducer,
+  },
+});
+
+建立store/slice/todo.js
+import { createSlice } from "@reduxjs/toolkit";
+export const todoSlice = createSlice({
+  name: 'todo',
+  initialState: {
+    todolist: [
+      { id: 1, name: 'first todo on redux' },
+      { id: 2, name: 'second todo in list' },
+    ],
+  },
+  reducers: {
+    addTodo: (state, action) => {
+      state.todolist.push(action.payload);
+    },
+  },
+});
+
+export const selectTodo = (state) => state.todo; 
+export default todoSlice.reducer;
+
+
+使用資料
+import { useSelector } from 'react-redux';
+import { selectTodo } from './store/slice/todo';
+
+const TodoList = () => {
+  const states = useSelector(selectTodo); // <-- 拿取資料
+  return (
+    <ul>
+      {states.todolist.map((i) => (
+        <li key={i.id}>{i.name}</li>
+      ))}
+    </ul>
+  );
+};

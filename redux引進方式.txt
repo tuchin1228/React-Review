@@ -6,46 +6,51 @@ npm install @reduxjs/toolkit
 
 建立store/index.js
 import { configureStore } from '@reduxjs/toolkit';
-import todoReducer from './store/slice/todo';
+import userSlice from './userSlice';
 
 export default configureStore({
   reducer: {
-    todo: todoReducer,
+    user:userSlice, //user為useSelector時會用到
   },
 });
 
-建立store/slice/todo.js
+建立store/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-export const todoSlice = createSlice({
-  name: 'todo',
-  initialState: {
-    todolist: [
-      { id: 1, name: 'first todo on redux' },
-      { id: 2, name: 'second todo in list' },
-    ],
-  },
-  reducers: {
-    addTodo: (state, action) => {
-      state.todolist.push(action.payload);
-    },
-  },
-});
 
-export const selectTodo = (state) => state.todo; 
-export default todoSlice.reducer;
+//預設值
+const initialState = {
+    profile: {
+        name: '',
+        age: 0,
+        email: '',
+        login: false
+    }
+}
+
+//reducer解說
+reducers: {
+        setLogin(state, action) {
+        },
+}
+state為redux中的資料，action為使用dispatch傳進來的資料
+
+export const {
+    setLogin,
+    setLogout
+} = userSlice.actions //dispatch方法時會用到
+
+export default userSlice.reducer; //store會用到
 
 
 使用資料
-import { useSelector } from 'react-redux';
-import { selectTodo } from './store/slice/todo';
+import { useSelector , useDispatch} from 'react-redux';
+import { setLogin , setLogout} from './store/userSlice'
 
-const TodoList = () => {
-  const states = useSelector(selectTodo); // <-- 拿取資料
-  return (
-    <ul>
-      {states.todolist.map((i) => (
-        <li key={i.id}>{i.name}</li>
-      ))}
-    </ul>
-  );
-};
+const state = useSelector(state => state.user) //拿取user資料
+const dispatch = useDispatch(); //註冊dispatch
+
+dispatch(setLogin({
+      name:'Alex',
+      age:10,
+      email:'email@gmail.com'
+})) //使用slice中的方法
